@@ -34,7 +34,7 @@ const ServicesHighlights = () => {
         <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
           <div className="max-w-3xl">
             <span className="text-secondary-500 font-bold tracking-widest uppercase mb-4 block">خدماتنا المتميزة</span>
-            <h2 className="text-4xl lg:text-6xl font-black text-secondary-900 leading-[1.1]">
+            <h2 className="text-3xl lg:text-5xl font-black text-secondary-900 leading-[1.1]">
               نقدم حلولاً هندسية <br />
               <span className="text-primary-500 relative">
                  متكاملة

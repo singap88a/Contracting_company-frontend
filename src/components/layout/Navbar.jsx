@@ -46,7 +46,7 @@ const Navbar = () => {
                 to={link.path}
                 className={`relative px-4 py-2 rounded-lg text-base font-bold transition-all duration-300 ${
                   isActive(link.path)
-                    ? 'text-secondary-900 bg-secondary-50'
+                    ? 'text-white bg-secondary-900'
                     : 'text-gray-500 hover:text-secondary-900 hover:bg-gray-50'
                 }`}
               >
@@ -96,7 +96,7 @@ const Navbar = () => {
                   onClick={() => setIsOpen(false)}
                   className={`px-4 py-4 rounded-xl text-lg font-bold flex items-center justify-between transition-colors ${
                     isActive(link.path)
-                      ? 'bg-secondary-50 text-secondary-900'
+                      ? 'bg-secondary-900 text-white'
                       : 'text-gray-500 hover:bg-gray-50 hover:text-secondary-900'
                   }`}
                 >
@@ -108,7 +108,7 @@ const Navbar = () => {
               <Link
                 to="/request-service"
                 onClick={() => setIsOpen(false)}
-                className="w-full text-center py-4 bg-secondary-900 text-white rounded-xl font-bold shadow-lg flex items-center justify-center gap-2"
+                className="w-full text-center py-4 bg-primary-500 hover:bg-primary-600 text-white rounded-xl font-bold shadow-lg flex items-center justify-center gap-2 transition-colors"
               >
                 طلب عرض سعر
                 <ArrowLeft size={20} />

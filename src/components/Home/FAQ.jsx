@@ -34,40 +34,53 @@ const FAQ = () => {
   };
 
   return (
-    <section className="py-24 bg-gray-50 relative overflow-hidden text-secondary-900 border-b border-gray-100">
-      <div className="container mx-auto px-4 max-w-7xl relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 items-start">
+    <section className="relative py-24 overflow-hidden border-b border-gray-100 bg-gray-50 text-secondary-900">
+      {/* Background Shapes */}
+      <div className="absolute top-0 right-0 w-full h-full opacity-[0.03] pointer-events-none">
+        <div className="absolute rounded-full top-20 right-20 w-96 h-96 bg-secondary-900 blur-3xl"></div>
+        <div className="absolute rounded-full bottom-20 left-20 w-80 h-80 bg-primary-500 blur-3xl"></div>
+      </div>
+      
+      {/* Grid Pattern */}
+      <div className="absolute top-0 left-0 w-full h-full opacity-[0.02] bg-[radial-gradient(#000_1px,transparent_1px)] [background-size:32px_32px]"></div>
+
+      <div className="container relative z-10 px-4 mx-auto max-w-7xl">
+        <div className="grid items-start grid-cols-1 gap-12 lg:grid-cols-3">
             
             {/* Left Column: FAQs */}
             <div className="lg:col-span-2">
                 <div className="mb-12">
-                    <div className="flex items-center gap-3 mb-4">
-                        <div className="w-12 h-1 bg-primary-500 rounded-full"></div>
-                        <span className="text-secondary-500 font-bold tracking-widest uppercase">الأسئلة الشائعة</span>
-                    </div>
-                    <h2 className="text-4xl md:text-5xl font-black text-secondary-900 leading-tight mb-6">
-                       هل لديك <span className="text-transparent bg-clip-text bg-gradient-to-l from-secondary-900 to-primary-600">استفسارات؟</span>
+                    <span className="block mb-4 font-bold tracking-widest uppercase text-secondary-500">الأسئلة الشائعة</span>
+                    <h2 className="text-3xl lg:text-5xl font-black text-secondary-900 leading-[1.1] mb-6">
+                       هل لديك <span className="relative text-primary-500">
+                         استفسارات؟
+                         <svg className="absolute right-0 w-full h-3 -bottom-1 text-primary-200 -z-10" viewBox="0 0 100 10" preserveAspectRatio="none"><path d="M0 5 Q 50 10 100 5" stroke="currentColor" strokeWidth="8" fill="none"/></svg>
+                       </span>
                     </h2>
-                    <p className="text-gray-500 text-lg max-w-2xl">
+                    <p className="max-w-2xl text-lg text-gray-500">
                         جمعنا لك أهم الأسئلة التي قد تدور في ذهنك حول خدماتنا وإجراءات العمل.
                     </p>
                 </div>
 
                 <div className="space-y-4">
                   {faqs.map((faq, index) => (
-                    <div 
-                      key={index} 
-                      className={`rounded-2xl transition-all duration-300 overflow-hidden border ${activeIndex === index ? 'bg-white border-primary-100 shadow-lg shadow-primary-500/5' : 'bg-white border-transparent hover:border-gray-200'}`}
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: index * 0.1 }}
+                      className={`rounded-[2rem] transition-all duration-300 overflow-hidden border-2 ${activeIndex === index ? 'bg-white border-primary-500 shadow-xl shadow-primary-500/10' : 'bg-white border-gray-100 hover:border-primary-200 hover:shadow-lg'}`}
                     >
                       <button
                         onClick={() => toggleFAQ(index)}
-                        className="w-full flex items-center justify-between p-6 text-right"
+                        className="flex items-center justify-between w-full p-6 text-right group"
                       >
-                        <span className={`text-lg font-bold transition-colors ${activeIndex === index ? 'text-primary-600' : 'text-gray-700'}`}>
+                        <span className={`text-lg font-black transition-colors ${activeIndex === index ? 'text-primary-600' : 'text-secondary-900 group-hover:text-primary-600'}`}>
                           {faq.question}
                         </span>
-                        <span className={`transform transition-transform duration-300 flex-shrink-0 mr-4 ${activeIndex === index ? 'rotate-180 text-primary-500' : 'text-gray-400'}`}>
-                          {activeIndex === index ? <HelpCircle size={24} /> : <ChevronDown size={24} />}
+                        <span className={`transform transition-all duration-300 flex-shrink-0 mr-4 w-10 h-10 rounded-full flex items-center justify-center ${activeIndex === index ? 'rotate-180 bg-primary-500 text-white shadow-lg' : 'bg-gray-50 text-gray-400 group-hover:bg-primary-50 group-hover:text-primary-500'}`}>
+                          {activeIndex === index ? <HelpCircle size={20} /> : <ChevronDown size={20} />}
                         </span>
                       </button>
                       
@@ -79,70 +92,94 @@ const FAQ = () => {
                             exit={{ height: 0, opacity: 0 }}
                             transition={{ duration: 0.3 }}
                           >
-                            <div className="px-6 pb-6 text-gray-500 leading-relaxed border-t border-gray-50 pt-4">
+                            <div className="px-6 pt-5 pb-6 font-medium leading-relaxed text-gray-600 border-t border-gray-100">
                               {faq.answer}
                             </div>
                           </motion.div>
                         )}
                       </AnimatePresence>
-                    </div>
+                    </motion.div>
                   ))}
                 </div>
             </div>
 
             {/* Right Column: CTA Card (Sticky & Styled) */}
             <div className="lg:col-span-1 lg:sticky lg:top-28">
-                <div className="bg-white rounded-2xl p-8 border border-gray-200 shadow-xl shadow-gray-200/50 relative overflow-hidden group">
-                    {/* Background decoration */}
-                    <div className="absolute top-0 right-0 w-32 h-32 bg-primary-50 rounded-bl-full -z-10 group-hover:scale-110 transition-transform duration-500"></div>
+                <motion.div
+                  initial={{ opacity: 0, x: 20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  className="bg-white rounded-[2rem] p-8 border-2 border-gray-100 shadow-2xl shadow-gray-200/50 relative overflow-hidden group hover:border-primary-200 transition-all duration-300"
+                >
+                    {/* Background Shapes - More Complex */}
+                    <div className="absolute top-0 right-0 w-40 h-40 transition-transform duration-500 rounded-bl-full bg-gradient-to-br from-primary-500/15 to-transparent -z-10 group-hover:scale-125"></div>
+                    <div className="absolute bottom-0 left-0 w-32 h-32 transition-transform duration-500 rounded-tr-full bg-gradient-to-tr from-secondary-900/10 to-transparent -z-10 group-hover:scale-110"></div>
+                    <div className="absolute w-24 h-24 transition-colors duration-500 transform -translate-x-1/2 -translate-y-1/2 rounded-full top-1/2 left-1/2 bg-primary-500/8 blur-2xl -z-10 group-hover:bg-primary-500/15"></div>
+                    
+                    {/* Additional Geometric Shapes */}
+                    <div className="absolute w-16 h-16 transition-all duration-500 rotate-45 border-2 rounded-lg top-8 left-8 border-primary-500/10 -z-10 group-hover:border-primary-500/20 group-hover:rotate-90"></div>
+                    <div className="absolute w-12 h-12 transition-all duration-500 rounded-full bottom-8 right-8 bg-secondary-900/5 -z-10 group-hover:bg-secondary-900/10 group-hover:scale-150"></div>
+                    <div className="absolute w-8 h-8 transition-transform duration-500 rounded-full top-1/4 right-1/4 bg-primary-500/10 -z-10 group-hover:scale-200"></div>
+                    
+                    {/* Grid Pattern */}
+                    <div className="absolute inset-0 opacity-[0.03] bg-[radial-gradient(#000_1px,transparent_1px)] [background-size:16px_16px] -z-10"></div>
+                    
+                    {/* Diagonal Lines Pattern */}
+                    <div className="absolute inset-0 opacity-[0.02] -z-10" style={{
+                      backgroundImage: 'repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(0,0,0,0.05) 10px, rgba(0,0,0,0.05) 20px)'
+                    }}></div>
                     
                     <div className="relative z-10">
-                        <div className="w-14 h-14 bg-primary-100/50 rounded-xl flex items-center justify-center text-primary-600 mb-6 group-hover:rotate-6 transition-transform duration-300">
-                            <MessageCircle size={28} />
+                        <div className="flex items-center justify-center w-16 h-16 mb-6 text-white transition-all duration-300 shadow-lg bg-gradient-to-br from-primary-500 to-primary-600 rounded-2xl group-hover:rotate-6 group-hover:scale-110">
+                            <MessageCircle size={28} strokeWidth={2} />
                         </div>
                         
-                        <h3 className="text-2xl font-black text-secondary-900 mb-3">هل لديك سؤال آخر؟</h3>
-                        <p className="text-gray-500 mb-8 leading-relaxed text-sm">
+                        <h3 className="mb-3 text-2xl font-black transition-colors duration-300 text-secondary-900 group-hover:text-primary-600">هل لديك سؤال آخر؟</h3>
+                        <p className="mb-8 text-sm font-medium leading-relaxed text-gray-600">
                             نحن هنا لمساعدتك. تواصل معنا مباشرة للحصول على الاستشارة المناسبة.
                         </p>
                         
                         <div className="space-y-5"> 
-                            <div className="flex items-start gap-4">
-                                <MapPin size={20} className="text-primary-500 mt-1" />
+                            <div className="flex items-start gap-4 p-4 transition-colors duration-300 rounded-xl bg-gray-50 group-hover:bg-primary-50">
+                                <div className="flex items-center justify-center w-10 h-10 transition-colors duration-300 rounded-lg bg-primary-100 text-primary-600 group-hover:bg-primary-500 group-hover:text-white">
+                                    <MapPin size={18} />
+                                </div>
                                 <div>
-                                    <p className="font-bold text-secondary-900 text-sm">الرياض، حي الصحافة</p>
-                                    <p className="text-xs text-gray-400">المقر الرئيسي</p>
+                                    <p className="mb-1 text-sm font-black text-secondary-900">الرياض، حي الصحافة</p>
+                                    <p className="text-xs font-medium text-gray-400">المقر الرئيسي</p>
                                 </div>
                             </div>
                             
-                            <div className="flex items-start gap-4">
-                                <Clock size={20} className="text-primary-500 mt-1" />
+                            <div className="flex items-start gap-4 p-4 transition-colors duration-300 rounded-xl bg-gray-50 group-hover:bg-primary-50">
+                                <div className="flex items-center justify-center w-10 h-10 transition-colors duration-300 rounded-lg bg-primary-100 text-primary-600 group-hover:bg-primary-500 group-hover:text-white">
+                                    <Clock size={18} />
+                                </div>
                                 <div>
-                                    <p className="font-bold text-secondary-900 text-sm">9:00 ص - 6:00 م</p>
-                                    <p className="text-xs text-gray-400">الأحد - الخميس</p>
+                                    <p className="mb-1 text-sm font-black text-secondary-900">9:00 ص - 6:00 م</p>
+                                    <p className="text-xs font-medium text-gray-400">الأحد - الخميس</p>
                                 </div>
                             </div>
 
-                            <div className="h-px bg-gray-100 w-full my-4"></div>
+                            <div className="h-[1px] bg-gradient-to-r from-transparent via-gray-200 to-transparent w-full my-4"></div>
 
-                            <Link to="/contact" className="w-full py-4 bg-secondary-900 hover:bg-primary-600 text-white rounded-xl font-bold flex items-center justify-center gap-2 transition-all shadow-lg shadow-secondary-900/10 active:scale-95">
+                            <Link to="/contact" className="flex items-center justify-center w-full gap-2 py-4 font-black text-white transition-all shadow-lg bg-secondary-900 hover:bg-primary-600 rounded-xl shadow-secondary-900/20 active:scale-95 group/btn">
                                 تواصل معنا
-                                <ArrowLeft size={18} />
+                                <ArrowLeft size={18} className="transition-transform group-hover/btn:-translate-x-1" />
                             </Link>
                             
                             <div className="flex gap-3">
-                                <a href="tel:+966500000000" className="flex-1 py-3 border border-gray-200 hover:border-primary-500 hover:text-primary-600 rounded-xl flex items-center justify-center text-gray-600 font-bold transition-all text-sm">
-                                    <Phone size={16} className="ml-2" />
+                                <a href="tel:+966500000000" className="flex items-center justify-center flex-1 py-3 text-sm font-black text-gray-600 transition-all border-2 border-gray-200 hover:border-primary-500 hover:bg-primary-50 hover:text-primary-600 rounded-xl group">
+                                    <Phone size={16} className="ml-2 transition-transform group-hover:scale-110" />
                                     اتصال
                                 </a>
-                                <a href="mailto:info@company.com" className="flex-1 py-3 border border-gray-200 hover:border-primary-500 hover:text-primary-600 rounded-xl flex items-center justify-center text-gray-600 font-bold transition-all text-sm">
-                                    <Mail size={16} className="ml-2" />
+                                <a href="mailto:info@company.com" className="flex items-center justify-center flex-1 py-3 text-sm font-black text-gray-600 transition-all border-2 border-gray-200 hover:border-primary-500 hover:bg-primary-50 hover:text-primary-600 rounded-xl group">
+                                    <Mail size={16} className="ml-2 transition-transform group-hover:scale-110" />
                                     إيميل
                                 </a>
                             </div>
                         </div>
                     </div>
-                </div>
+                </motion.div>
             </div>
 
         </div>

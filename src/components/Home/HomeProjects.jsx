@@ -1,17 +1,9 @@
-import React, { useRef } from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination } from 'swiper/modules';
-import { motion, AnimatePresence } from 'framer-motion';
+import React from 'react';
+import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, ArrowUpRight, MapPin } from 'lucide-react';
-
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
+import { ArrowLeft, ArrowUpRight, MapPin } from 'lucide-react';
 
 const HomeProjects = () => {
-    const swiperRef = useRef(null);
-
     const projects = [
         {
             id: 1,
@@ -34,13 +26,6 @@ const HomeProjects = () => {
             location: 'الدمام، الشاطئ',
             image: 'https://images.unsplash.com/photo-1600596542815-2a4d9f6fac90?q=80&w=1000&auto=format&fit=crop'
         },
-         {
-            id: 4,
-            title: 'منتجع الشروق',
-            category: 'سياحي',
-            location: 'الخبر',
-            image: 'https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?q=80&w=1000&auto=format&fit=crop'
-        },
     ];
 
     const ProjectCard = ({ project }) => (
@@ -48,7 +33,7 @@ const HomeProjects = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="group relative h-[500px] rounded-[2rem] overflow-hidden cursor-pointer shadow-lg hover:shadow-2xl transition-all duration-500 bg-gray-900 border border-gray-100/10"
+            className="group relative h-[420px] rounded-[2rem] overflow-hidden cursor-pointer shadow-xl hover:shadow-2xl transition-all duration-500 bg-gray-900 border border-gray-200"
         >
             <div className="absolute inset-0">
                 <img 
@@ -56,32 +41,36 @@ const HomeProjects = () => {
                     alt={project.title} 
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/40 to-transparent opacity-80 group-hover:opacity-70 transition-opacity duration-300"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-secondary-900 via-secondary-900/50 to-transparent opacity-85 group-hover:opacity-75 transition-opacity duration-300"></div>
             </div>
+
+            {/* Decorative Elements */}
+            <div className="absolute top-0 right-0 w-32 h-32 bg-primary-500/10 rounded-bl-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/5 rounded-tr-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
             <div className="absolute bottom-0 left-0 w-full p-8 z-20">
                 <div className="mb-4 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                    <span className="inline-block px-4 py-1.5 bg-white/10 backdrop-blur-md border border-white/20 text-white text-xs font-bold rounded-full mb-4 uppercase tracking-wider">
+                    <span className="inline-block px-5 py-2 bg-white/15 backdrop-blur-md border border-white/30 text-white text-xs font-black rounded-full mb-5 uppercase tracking-wider shadow-lg">
                         {project.category}
                     </span>
-                    <h3 className="text-3xl font-black text-white mb-2 font-cairo leading-tight">
+                    <h3 className="text-3xl font-black text-white mb-3 font-cairo leading-tight group-hover:text-primary-300 transition-colors duration-300">
                         {project.title}
                     </h3>
-                    <div className="flex items-center gap-2 text-gray-300 text-sm font-medium">
-                        <MapPin size={16} className="text-primary-500" />
+                    <div className="flex items-center gap-2 text-gray-200 text-sm font-bold">
+                        <MapPin size={18} className="text-primary-400" />
                         {project.location}
                     </div>
                 </div>
                 
-                <div className="w-full h-px bg-white/10 mb-6 group-hover:bg-white/30 transition-colors"></div>
+                <div className="w-full h-[1px] bg-white/20 mb-6 group-hover:bg-primary-500 group-hover:h-[2px] transition-all duration-300"></div>
 
                 <Link 
                     to={`/projects/${project.id}`} 
-                    className="inline-flex items-center gap-3 text-white font-bold group-hover:gap-6 transition-all duration-300"
+                    className="inline-flex items-center gap-3 text-white font-black group-hover:gap-6 transition-all duration-300"
                 >
                     عرض التفاصيل
-                    <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-primary-500 group-hover:text-secondary-900 transition-all">
-                       <ArrowUpRight size={18} />
+                    <div className="w-12 h-12 rounded-full bg-white/15 backdrop-blur-md border border-white/30 flex items-center justify-center group-hover:bg-primary-500 group-hover:border-primary-500 group-hover:scale-110 transition-all duration-300 shadow-lg">
+                       <ArrowUpRight size={20} />
                     </div>
                 </Link>
             </div>
@@ -89,71 +78,50 @@ const HomeProjects = () => {
     );
 
   return (
-    <section className="py-24 bg-white border-b border-gray-100 relative overflow-hidden">
+    <section className="py-24 bg-gray-50 border-b border-gray-100 relative overflow-hidden">
+      {/* Background Shapes */}
+      <div className="absolute top-0 right-0 w-full h-full opacity-[0.03] pointer-events-none">
+        <div className="absolute top-20 right-20 w-96 h-96 bg-secondary-900 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-20 left-20 w-80 h-80 bg-primary-500 rounded-full blur-3xl"></div>
+      </div>
+      
+      {/* Grid Pattern */}
+      <div className="absolute top-0 left-0 w-full h-full opacity-[0.02] bg-[radial-gradient(#000_1px,transparent_1px)] [background-size:32px_32px]"></div>
+
       <div className="container mx-auto px-4 max-w-7xl relative z-10">
         
         {/* Header & Nav */}
         <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
-            <div className="max-w-3xl">
-                <span className="text-primary-600 font-bold tracking-widest uppercase mb-4 block">معرض الأعمال</span>
-                <h2 className="text-4xl lg:text-5xl font-black text-secondary-900 leading-[1.2]">
-                  أحدث <span className="text-transparent bg-clip-text bg-gradient-to-l from-secondary-900 to-primary-600">مشاريعنا</span> المتميزة
-                </h2>
-            </div>
+            <div className="flex-1 flex flex-col md:flex-row items-start md:items-end justify-between gap-6">
+                <div className="max-w-3xl">
+                    <span className="text-secondary-500 font-bold tracking-widest uppercase mb-4 block">معرض الأعمال</span>
+                    <h2 className="text-3xl lg:text-5xl font-black text-secondary-900 leading-[1.1]">
+                      أحدث <span className="text-primary-500 relative">
+                        مشاريعنا
+                        <svg className="absolute w-full h-3 -bottom-1 right-0 text-primary-200 -z-10" viewBox="0 0 100 10" preserveAspectRatio="none"><path d="M0 5 Q 50 10 100 5" stroke="currentColor" strokeWidth="8" fill="none"/></svg>
+                      </span> المتميزة
+                    </h2>
+                </div>
 
-            {/* Navigation Buttons (Mobile Only) */}
-            <div className="flex items-center gap-4 lg:hidden">
-                 <button 
-                   onClick={() => swiperRef.current?.slidePrev()}
-                   className="w-14 h-14 rounded-full border border-gray-200 flex items-center justify-center text-secondary-900 hover:bg-secondary-900 hover:text-white transition-all duration-300"
-                 >
-                    <ArrowRight size={24} />
-                 </button>
-                 <button 
-                   onClick={() => swiperRef.current?.slideNext()}
-                   className="w-14 h-14 rounded-full bg-secondary-900 text-white flex items-center justify-center hover:bg-primary-500 hover:text-secondary-900 transition-all duration-300 shadow-lg"
-                 >
-                    <ArrowLeft size={24} />
-                 </button>
+                {/* Button in Header - Orange */}
+                <Link 
+                  to="/projects"
+                  className="inline-flex items-center gap-3 px-6 py-3 bg-primary-500 hover:bg-primary-600 text-white font-bold rounded-xl transition-all duration-300 shadow-xl shadow-primary-500/20 group whitespace-nowrap"
+                >
+                  <span className="text-sm md:text-base">استكشف كافة المشاريع</span>
+                  <ArrowLeft size={18} className="group-hover:-translate-x-1 transition-transform" />
+                </Link>
             </div>
         </div>
 
-        {/* Projects Slider */}
-        <Swiper
-            onSwiper={(swiper) => (swiperRef.current = swiper)}
-            modules={[Navigation, Pagination]}
-            spaceBetween={30}
-            slidesPerView={1}
-            breakpoints={{
-                640: { slidesPerView: 2 },
-                1024: { slidesPerView: 3 },
-            }}
-            loop={true}
-            className="pb-16 !overflow-visible"
-        >
+        {/* Projects Grid - 3 Cards Only */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {projects.map((project, index) => (
-                <SwiperSlide key={project.id}>
-                    <ProjectCard project={project} />
-                </SwiperSlide>
+                <ProjectCard key={project.id} project={project} />
             ))}
-        </Swiper>
-
-        <div className="flex justify-center mt-8">
-             <Link 
-               to="/projects"
-               className="inline-flex items-center gap-3 px-8 py-4 bg-secondary-900 text-white font-bold rounded-xl hover:bg-primary-500 hover:text-white transition-all duration-300 shadow-xl shadow-secondary-900/10 group"
-             >
-                <span className="text-base">استكشف كافة المشاريع</span>
-                <AnimatePresence>
-                    <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
-                </AnimatePresence>
-             </Link>
         </div>
 
       </div>
-      
-      {/* Background Pattern */}
-      <div className="absolute top-0 right-0 w-full h-full opacity-[0.03] pointer-events-none bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-black to-transparent"></div>
     </section>
   );
 };

@@ -16,7 +16,7 @@ const Brands = () => {
   ];
 
   return (
-    <section className="py-12 bg-white border-b border-gray-100">
+    <section className="py-12 bg-gray-50 border-b border-gray-100">
        <Swiper
          modules={[Autoplay]}
          spaceBetween={60}

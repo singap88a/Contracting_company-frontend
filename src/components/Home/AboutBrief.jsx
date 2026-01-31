@@ -27,9 +27,15 @@ const AboutBrief = () => {
   ];
 
   return (
-    <section className="py-24 bg-white relative overflow-hidden">
-      {/* Background Decor */}
-      <div className="absolute top-0 left-0 w-full h-full opacity-[0.03] bg-[radial-gradient(#000_1px,transparent_1px)] [background-size:16px_16px]"></div>
+    <section className="py-24 bg-gray-50 relative overflow-hidden border-b border-gray-100">
+      {/* Background Shapes */}
+      <div className="absolute top-0 right-0 w-full h-full opacity-[0.03] pointer-events-none">
+        <div className="absolute top-20 right-20 w-96 h-96 bg-secondary-900 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-20 left-20 w-80 h-80 bg-primary-500 rounded-full blur-3xl"></div>
+      </div>
+      
+      {/* Grid Pattern */}
+      <div className="absolute top-0 left-0 w-full h-full opacity-[0.02] bg-[radial-gradient(#000_1px,transparent_1px)] [background-size:32px_32px]"></div>
 
       <div className="container mx-auto px-4 max-w-7xl relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
@@ -37,7 +43,7 @@ const AboutBrief = () => {
           {/* Text Content */}
           <div>
             <span className="text-secondary-500 font-bold tracking-widest uppercase mb-4 block">لماذا تختارنا</span>
-            <h2 className="text-4xl lg:text-6xl font-black text-secondary-900 mb-8 leading-[1.1]">
+            <h2 className="text-3xl lg:text-5xl font-black text-secondary-900 mb-8 leading-[1.1]">
               نحن نبني <br />
               <span className="text-primary-500 relative">
                  الثقة
