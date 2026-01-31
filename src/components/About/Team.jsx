@@ -31,7 +31,7 @@ const Team = () => {
   ];
 
   return (
-    <section className="py-32 relative overflow-hidden bg-gray-50">
+    <section className="py-32 relative overflow-hidden bg-white">
       <div className="container mx-auto px-4 max-w-7xl">
         <div className="text-center mb-20">
           <motion.div
@@ -39,8 +39,8 @@ const Team = () => {
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
           >
-             <span className="text-primary-600 font-black tracking-widest uppercase mb-4 block">نخبة الخبراء</span>
-             <h2 className="text-5xl md:text-7xl font-black text-secondary-900 mb-6 leading-none">فريق <span className="text-primary-500">الإبداع</span></h2>
+             <span className="text-primary-600 font-[1000] tracking-[0.4em] uppercase mb-4 block">نخبة الخبراء</span>
+             <h2 className="text-5xl md:text-7xl font-[1000] text-secondary-900 mb-6 leading-none">فريق <span className="text-primary-500">الإبداع</span></h2>
              <div className="w-32 h-2 bg-gradient-to-r from-transparent via-primary-500 to-transparent mx-auto rounded-full"></div>
           </motion.div>
         </div>
@@ -68,17 +68,17 @@ const Team = () => {
                     {member.bio}
                   </p>
                   <div className="flex gap-4 justify-end">
-                    <a href="#" className="w-12 h-12 rounded-2xl bg-white/10 hover:bg-primary-500 flex items-center justify-center transition-all transform hover:rotate-12">
+                    <a href="#" className="w-12 h-12 rounded-2xl bg-white/10 hover:bg-primary-500 flex items-center justify-center transition-all transform hover:rotate-12 border border-transparent hover:border-primary-500">
                       <Linkedin size={22} />
                     </a>
-                    <a href="#" className="w-12 h-12 rounded-2xl bg-white/10 hover:bg-primary-500 flex items-center justify-center transition-all transform hover:rotate-12">
+                    <a href="#" className="w-12 h-12 rounded-2xl bg-white/10 hover:bg-primary-500 flex items-center justify-center transition-all transform hover:rotate-12 border border-transparent hover:border-primary-500">
                       <Mail size={22} />
                     </a>
                   </div>
                 </div>
 
                 {/* Floating role tag */}
-                <div className="absolute top-8 right-8 py-2 px-6 bg-primary-500 text-secondary-900 rounded-full shadow-lg font-black text-[10px] uppercase tracking-widest">
+                <div className="absolute top-8 right-8 py-2 px-6 bg-primary-500 text-secondary-950 rounded-full shadow-lg font-black text-[10px] uppercase tracking-widest">
                    {member.role}
                 </div>
               </div>
@@ -86,10 +86,12 @@ const Team = () => {
               <div className="flex items-center justify-between px-6">
                 <div className="text-right">
                   <h3 className="text-2xl font-black text-secondary-900 mb-1 group-hover:text-primary-500 transition-colors uppercase tracking-widest leading-none">{member.name}</h3>
-                  <p className="text-primary-600 text-sm font-black uppercase tracking-widest">{member.role}</p>
+                  <p className="text-gray-400 text-sm font-black uppercase tracking-widest group-hover:text-primary-500 transition-colors">
+                    {member.role}
+                  </p>
                 </div>
-                <div className="w-12 h-12 rounded-2xl bg-white border border-gray-100 flex items-center justify-center group-hover:bg-primary-500 transition-all duration-500 group-hover:border-primary-500">
-                   <ArrowUpRight size={24} className="text-gray-300 group-hover:text-secondary-900 transition-colors" />
+                <div className="w-12 h-12 rounded-2xl bg-white border-2 border-primary-500 flex items-center justify-center group-hover:bg-primary-500 transition-all duration-500">
+                   <ArrowUpRight size={24} className="text-primary-500 group-hover:text-white transition-colors" />
                 </div>
               </div>
             </motion.div>

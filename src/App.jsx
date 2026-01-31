@@ -11,6 +11,8 @@ import Contact from './pages/Contact';
 import ServiceRequest from './pages/ServiceRequest';
 import Terms from './pages/Terms';
 import Privacy from './pages/Privacy';
+import Articles from './pages/Articles';
+import ArticleDetails from './pages/ArticleDetails';
 
 function App() {
   return (
@@ -21,6 +23,8 @@ function App() {
         <Route path="services" element={<Services />} />
         <Route path="projects" element={<Projects />} />
         <Route path="projects/:id" element={<ProjectDetails />} />
+        <Route path="articles" element={<Articles />} />
+        <Route path="articles/:id" element={<ArticleDetails />} />
         <Route path="careers" element={<Careers />} />
         <Route path="contact" element={<Contact />} />
         <Route path="request-service" element={<ServiceRequest />} />

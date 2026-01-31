@@ -1,17 +1,18 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { ArrowLeft } from 'lucide-react';
 
 const AboutHero = () => {
   return (
-    <section className="relative h-[70vh] md:h-[85vh] flex items-center justify-center overflow-hidden">
-      {/* Background Image */}
+    <section className="relative h-[50vh] md:h-[60vh] flex items-center justify-center overflow-hidden">
+      {/* Background with improved visibility */}
       <div className="absolute inset-0 z-0">
         <img 
-          src="https://images.unsplash.com/photo-1541888946425-d81bb194882e?q=80&w=2070&auto=format&fit=crop" 
-          className="w-full h-full object-cover" 
-          alt="Construction Background" 
+          src="https://t3.ftcdn.net/jpg/07/39/72/02/360_F_739720225_wI41mPgiTu3bg0AhBbg7ckMmouvlOcN4.jpg" 
+          className="w-full h-full object-cover brightness-[0.4] contrast-125" 
+          alt="Construction Site" 
         />
-        <div className="absolute inset-0 bg-secondary-900/40"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-secondary-900/40 to-secondary-950/80"></div>
       </div>
 
       <div className="container mx-auto px-4 max-w-7xl relative z-10 text-center">
@@ -20,21 +21,22 @@ const AboutHero = () => {
            animate={{ opacity: 1, y: 0 }}
            transition={{ duration: 0.8 }}
         >
-          <span className="text-primary-500 font-black tracking-widest uppercase mb-6 block text-sm md:text-base">
-            مرحباً بكم في صرح البناء
-          </span>
-          <h1 className="text-4xl md:text-8xl font-black text-white mb-10 leading-[1.1] tracking-tighter uppercase">
-             نقوم بالبناء <br /> <span className="text-primary-500">لأفضل خدمة</span>
+          <span className="text-primary-500 font-extrabold uppercase tracking-[0.4em] text-sm mb-6 block">شركة صرح البناء المقاولات</span>
+          <h1 className="text-6xl md:text-8xl font-black text-white leading-tight mb-10">
+             عن <span className="text-primary-500">الشركة</span>
           </h1>
-          <p className="text-white/90 text-lg md:text-xl max-w-3xl mx-auto mb-12 font-medium leading-relaxed">
-             نحن نقدم حلولاً إنشائية متكاملة تجمع بين الجودة والابتكار لتحقيق رؤية عملائنا على أرض الواقع.
-          </p>
-          <button className="py-5 px-12 bg-primary-500 text-white rounded-xl font-black text-lg hover:bg-white hover:text-primary-500 transition-all duration-300 transform hover:scale-105 shadow-xl shadow-primary-500/30">
-             إقرأ المزيد
-          </button>
+          
+          <div className="flex justify-center">
+            <button className="group relative py-5 px-12 bg-primary-500 text-secondary-950 font-black text-lg rounded-2xl overflow-hidden transition-all hover:shadow-[0_20px_40px_-10px_rgba(249,115,22,0.5)] flex items-center gap-3">
+              <span>اكتشف المزيد</span>
+              <ArrowLeft size={20} className="group-hover:-translate-x-2 transition-transform" />
+            </button>
+          </div>
         </motion.div>
       </div>
- 
+
+      {/* Subtle Bottom Fade */}
+      <div className="absolute bottom-0 left-0 w-full h-10 bg-gradient-to-t from-white to-transparent"></div>
     </section>
   );
 };
