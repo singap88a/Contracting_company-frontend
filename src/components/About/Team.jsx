@@ -1,5 +1,6 @@
 import React from 'react';
-import { Linkedin, Twitter, Mail } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Linkedin, Twitter, Mail, ArrowUpRight } from 'lucide-react';
 
 const Team = () => {
   const team = [
@@ -30,51 +31,68 @@ const Team = () => {
   ];
 
   return (
-    <section className="py-24 bg-gray-50">
+    <section className="py-32 relative overflow-hidden bg-gray-50">
       <div className="container mx-auto px-4 max-w-7xl">
-        <div className="text-center mb-16">
-          <span className="text-primary-600 font-bold tracking-wider uppercase bg-primary-50 px-4 py-2 rounded-full inline-block mb-4">فريق العمل</span>
-          <h2 className="text-4xl font-bold text-secondary-900 mb-4">نخبة من الخبراء</h2>
-          <p className="text-gray-500 max-w-2xl mx-auto">
-            نفتخر بفريقنا المتميز الذي يضم أفضل الكفاءات والخبرات في مجال المقاولات والهندسة، يعملون بشغف لتحقيق رؤيتكم.
-          </p>
+        <div className="text-center mb-20">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+          >
+             <span className="text-primary-600 font-black tracking-widest uppercase mb-4 block">نخبة الخبراء</span>
+             <h2 className="text-5xl md:text-7xl font-black text-secondary-900 mb-6 leading-none">فريق <span className="text-primary-500">الإبداع</span></h2>
+             <div className="w-32 h-2 bg-gradient-to-r from-transparent via-primary-500 to-transparent mx-auto rounded-full"></div>
+          </motion.div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {team.map((member, index) => (
-            <div key={index} className="group relative bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
-              {/* Image Container */}
-              <div className="relative h-80 overflow-hidden">
+            <motion.div 
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.1 }}
+              className="group"
+            >
+              <div className="relative rounded-[3.5rem] overflow-hidden bg-white border border-gray-100 mb-8 aspect-[4/5] shadow-2xl">
                 <img 
                   src={member.image} 
                   alt={member.name} 
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 grayscale group-hover:grayscale-0"
+                  className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-110"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-secondary-900 via-secondary-900/40 to-transparent opacity-0 group-hover:opacity-90 transition-opacity duration-300 flex flex-col justify-end p-6">
-                   <p className="text-gray-300 text-sm mb-4 translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-100">
-                     {member.bio}
-                   </p>
-                   <div className="flex gap-4 translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-200">
-                      <a href="#" className="w-10 h-10 bg-white/20 hover:bg-white hover:text-secondary-900 backdrop-blur-sm rounded-full flex items-center justify-center text-white transition-colors">
-                        <Linkedin size={18} />
-                      </a>
-                      <a href="#" className="w-10 h-10 bg-white/20 hover:bg-white hover:text-secondary-900 backdrop-blur-sm rounded-full flex items-center justify-center text-white transition-colors">
-                        <Twitter size={18} />
-                      </a>
-                      <a href="#" className="w-10 h-10 bg-white/20 hover:bg-white hover:text-primary-500 backdrop-blur-sm rounded-full flex items-center justify-center text-white transition-colors">
-                        <Mail size={18} />
-                      </a>
-                   </div>
+                
+                {/* Overlay on hover */}
+                <div className="absolute inset-0 bg-secondary-900/95 opacity-0 group-hover:opacity-100 transition-all duration-500 flex flex-col justify-end p-10 text-white translate-y-full group-hover:translate-y-0 text-right">
+                  <p className="text-lg leading-relaxed text-gray-300 mb-8 font-medium">
+                    {member.bio}
+                  </p>
+                  <div className="flex gap-4 justify-end">
+                    <a href="#" className="w-12 h-12 rounded-2xl bg-white/10 hover:bg-primary-500 flex items-center justify-center transition-all transform hover:rotate-12">
+                      <Linkedin size={22} />
+                    </a>
+                    <a href="#" className="w-12 h-12 rounded-2xl bg-white/10 hover:bg-primary-500 flex items-center justify-center transition-all transform hover:rotate-12">
+                      <Mail size={22} />
+                    </a>
+                  </div>
+                </div>
+
+                {/* Floating role tag */}
+                <div className="absolute top-8 right-8 py-2 px-6 bg-primary-500 text-secondary-900 rounded-full shadow-lg font-black text-[10px] uppercase tracking-widest">
+                   {member.role}
                 </div>
               </div>
               
-              {/* Info */}
-              <div className="p-6 text-center relative bg-white">
-                <h3 className="text-xl font-bold text-secondary-900 mb-1 group-hover:text-primary-600 transition-colors">{member.name}</h3>
-                <p className="text-gray-500 font-medium text-sm uppercase tracking-wider">{member.role}</p>
-                <div className="w-12 h-1 bg-gray-100 mx-auto mt-4 group-hover:bg-primary-500 transition-colors duration-300"></div>
+              <div className="flex items-center justify-between px-6">
+                <div className="text-right">
+                  <h3 className="text-2xl font-black text-secondary-900 mb-1 group-hover:text-primary-500 transition-colors uppercase tracking-widest leading-none">{member.name}</h3>
+                  <p className="text-primary-600 text-sm font-black uppercase tracking-widest">{member.role}</p>
+                </div>
+                <div className="w-12 h-12 rounded-2xl bg-white border border-gray-100 flex items-center justify-center group-hover:bg-primary-500 transition-all duration-500 group-hover:border-primary-500">
+                   <ArrowUpRight size={24} className="text-gray-300 group-hover:text-secondary-900 transition-colors" />
+                </div>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
