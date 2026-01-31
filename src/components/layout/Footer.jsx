@@ -4,7 +4,7 @@ import { Facebook, Twitter, Instagram, Linkedin, MapPin, Phone, Mail, ArrowRight
 
 const Footer = () => {
   return (
-    <footer className="bg-secondary-900 text-white pt-32 pb-10 mt-auto">
+    <footer className="bg-secondary-900 text-white pt-10 pb-5 mt-auto">
       <div className="container mx-auto px-4 max-w-7xl">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
           {/* Company Info */}

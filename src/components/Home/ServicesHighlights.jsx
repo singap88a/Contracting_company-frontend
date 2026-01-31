@@ -45,7 +45,7 @@ const ServicesHighlights = () => {
           
           <Link 
             to="/services" 
-            className="group relative inline-flex items-center justify-center px-8 py-4 overflow-hidden rounded-full transition-all duration-300 bg-gradient-to-r from-secondary-900 to-primary-600 hover:from-primary-600 hover:to-secondary-900 shadow-lg hover:shadow-xl"
+            className="group relative inline-flex items-center justify-center px-8 py-4 overflow-hidden rounded-full transition-all bg-primary-500 hover:bg-primary-600 "
           >
             <span className="relative flex items-center gap-3 text-white font-bold text-lg">
               جميع الخدمات

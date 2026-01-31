@@ -104,13 +104,15 @@ const FAQ = () => {
             </div>
 
             {/* Right Column: CTA Card (Sticky & Styled) */}
-            <div className="lg:col-span-1 lg:sticky lg:top-28">
+            <div className="lg:col-span-1 lg:sticky lg:top-40">
                 <motion.div
                   initial={{ opacity: 0, x: 20 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   className="bg-white rounded-[2rem] p-8 border-2 border-gray-100 shadow-2xl shadow-gray-200/50 relative overflow-hidden group hover:border-primary-200 transition-all duration-300"
                 >
+
+                  {/*///////////////////////////////////////////////////////////// */}
                     {/* Background Shapes - More Complex */}
                     <div className="absolute top-0 right-0 w-40 h-40 transition-transform duration-500 rounded-bl-full bg-gradient-to-br from-primary-500/15 to-transparent -z-10 group-hover:scale-125"></div>
                     <div className="absolute bottom-0 left-0 w-32 h-32 transition-transform duration-500 rounded-tr-full bg-gradient-to-tr from-secondary-900/10 to-transparent -z-10 group-hover:scale-110"></div>
@@ -128,13 +130,21 @@ const FAQ = () => {
                     <div className="absolute inset-0 opacity-[0.02] -z-10" style={{
                       backgroundImage: 'repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(0,0,0,0.05) 10px, rgba(0,0,0,0.05) 20px)'
                     }}></div>
+
+                  {/* ///////////////////////////////////////// */}
                     
                     <div className="relative z-10">
-                        <div className="flex items-center justify-center w-16 h-16 mb-6 text-white transition-all duration-300 shadow-lg bg-gradient-to-br from-primary-500 to-primary-600 rounded-2xl group-hover:rotate-6 group-hover:scale-110">
+                      <div className="flex items-center gap-4">
+                              <div className="flex items-center justify-center w-14 h-14 mb-6 text-white transition-all duration-300 shadow-lg bg-gradient-to-br from-primary-500 to-primary-600 rounded-2xl group-hover:rotate-6 group-hover:scale-110">
                             <MessageCircle size={28} strokeWidth={2} />
+                            
                         </div>
-                        
-                        <h3 className="mb-3 text-2xl font-black transition-colors duration-300 text-secondary-900 group-hover:text-primary-600">هل لديك سؤال آخر؟</h3>
+                        <div className="">
+                                                  <h3 className="mb-6 text-2xl font-black transition-colors duration-300 text-secondary-900 group-hover:text-primary-600">هل لديك سؤال آخر؟</h3>
+
+                        </div>
+                      </div>
+                  
                         <p className="mb-8 text-sm font-medium leading-relaxed text-gray-600">
                             نحن هنا لمساعدتك. تواصل معنا مباشرة للحصول على الاستشارة المناسبة.
                         </p>
