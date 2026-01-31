@@ -45,20 +45,21 @@ const AboutValues = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1, duration: 0.6 }}
-              className="relative p-10 bg-white rounded-[3rem] border border-gray-100 shadow-xl transition-all duration-500 group overflow-hidden"
+              className="relative p-9 bg-white rounded-[3rem] border border-gray-100 shadow-xl transition-all duration-500 group overflow-hidden"
             >
               {/* Graphic Background Shapes */}
-              <div className="absolute top-0 right-0 w-32 h-32 bg-primary-50 rounded-bl-[5rem] -z-0 transition-transform duration-700 group-hover:scale-125"></div>
+              <div className="absolute top-0 right-0 w-20 h-20 bg-primary-50 rounded-bl-[5rem] -z-0 transition-transform duration-700 group-hover:scale-125"></div>
               
               <div className="relative z-10">
-                <div className="w-16 h-16 bg-primary-500 rounded-2xl flex items-center justify-center text-secondary-950 mb-8 transition-all duration-500  ">
+                <div className="flex items-center gap-4  mb-2">
+                <div className="w-12 h-12 bg-primary-500 rounded-2xl flex items-center justify-center text-secondary-950 transition-all duration-500  ">
                   {React.cloneElement(value.icon, { size: 32, className: "" })}
                 </div>
                 
-                <h3 className="text-xl font-black text-secondary-900 mb-4 group-hover:text-primary-500 transition-colors">
+                <h3 className="text-xl font-black text-secondary-900   group-hover:text-primary-500 transition-colors">
                   {value.title}
                 </h3>
-                
+                </div>
                 <p className="text-gray-500 text-base leading-relaxed font-bold">
                   {value.desc}
                 </p>
