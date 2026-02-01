@@ -1,32 +1,29 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, ArrowUpRight, MapPin } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { ArrowLeft, ArrowUpRight, MapPin, Loader2 } from 'lucide-react';
+import { API_URL } from '../../config';
 
 const HomeProjects = () => {
-    const projects = [
-        {
-            id: 1,
-            title: 'برج النخبة السكني',
-            category: 'سكني',
-            location: 'الرياض، حي الصحافة',
-            image: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?q=80&w=1000&auto=format&fit=crop'
-        },
-        {
-            id: 2,
-            title: 'مجمع الأعمال الذكي',
-            category: 'تجاري',
-            location: 'جدة، طريق الملك',
-            image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1000&auto=format&fit=crop'
-        },
-        {
-            id: 3,
-            title: 'فيلا مودرن فاخرة',
-            category: 'سكني',
-            location: 'الدمام، الشاطئ',
-            image: 'https://images.unsplash.com/photo-1600596542815-2a4d9f6fac90?q=80&w=1000&auto=format&fit=crop'
-        },
-    ];
+    const [projects, setProjects] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchProjects = async () => {
+            try {
+                const response = await fetch(`${API_URL}/projects`);
+                const data = await response.json();
+                if (response.ok) {
+                    setProjects(data.slice(0, 3)); // Show only 3 projects
+                }
+            } catch (err) {
+                console.error('Error fetching projects:', err);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchProjects();
+    }, []);
 
     const ProjectCard = ({ project }) => (
         <motion.div 
@@ -37,7 +34,7 @@ const HomeProjects = () => {
         >
             <div className="absolute inset-0">
                 <img 
-                    src={project.image} 
+                    src={project.images?.[0] || 'https://images.unsplash.com/photo-1503387762-592dea58ef21?q=80&w=1000&auto=format&fit=crop'} 
                     alt={project.title} 
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 />
@@ -65,7 +62,7 @@ const HomeProjects = () => {
                 <div className="w-full h-[1px] bg-white/20 mb-6 group-hover:bg-primary-500 group-hover:h-[2px] transition-all duration-300"></div>
 
                 <Link 
-                    to={`/projects/${project.id}`} 
+                    to={`/projects/${project._id}`} 
                     className="inline-flex items-center gap-3 text-white font-black group-hover:gap-6 transition-all duration-300"
                 >
                     عرض التفاصيل
@@ -115,11 +112,17 @@ const HomeProjects = () => {
         </div>
 
         {/* Projects Grid - 3 Cards Only */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {projects.map((project, index) => (
-                <ProjectCard key={project.id} project={project} />
-            ))}
-        </div>
+        {loading ? (
+            <div className="flex items-center justify-center py-20">
+                <Loader2 className="w-10 h-10 text-primary-500 animate-spin" />
+            </div>
+        ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {projects.map((project, index) => (
+                    <ProjectCard key={project._id} project={project} />
+                ))}
+            </div>
+        )}
 
       </div>
     </section>

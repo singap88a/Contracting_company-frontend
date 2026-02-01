@@ -1,52 +1,10 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, ArrowUpRight, MapPin, Sparkles } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { ArrowLeft, ArrowUpRight, MapPin, Sparkles, Loader2 } from 'lucide-react';
+import { API_URL } from '../../config';
 
-const projects = [
-  {
-    id: 1,
-    title: 'برج الأفق التجاري',
-    category: 'تجاري',
-    location: 'الرياض، العليا',
-    image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1000&auto=format&fit=crop',
-  },
-  {
-    id: 2,
-    title: 'مجمع النخيل السكني',
-    category: 'سكنى',
-    location: 'جدة، حي الروضة',
-    image: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?q=80&w=1000&auto=format&fit=crop',
-  },
-  {
-    id: 3,
-    title: 'فيلا الروابي الخاصة',
-    category: 'سكنى',
-    location: 'الرياض، الملقا',
-    image: 'https://images.unsplash.com/photo-1600596542815-2495db98dada?q=80&w=1000&auto=format&fit=crop',
-  },
-  {
-    id: 4,
-    title: 'تطوير حديقة الملك',
-    category: 'عام',
-    location: 'الدمام، الكورنيش',
-    image: 'https://images.unsplash.com/photo-1558036117-15ea8475e297?q=80&w=1000&auto=format&fit=crop',
-  },
-  {
-    id: 5,
-    title: 'مول المستقبل',
-    category: 'تجاري',
-    location: 'الخبر، طريق الملك فهد',
-    image: 'https://images.unsplash.com/photo-1555636222-cae831e670b3?q=80&w=1000&auto=format&fit=crop',
-  },
-  {
-    id: 6,
-    title: 'مستشفى الشفاء الدولي',
-    category: 'طبي',
-    location: 'مكة المكرمة',
-    image: 'https://images.unsplash.com/photo-1587351021759-3e566b9af923?q=80&w=1000&auto=format&fit=crop',
-  }
-];
+// Static data removed, fetching from backend
 
 const ProjectCard = ({ project }) => (
     <motion.div 
@@ -55,10 +13,10 @@ const ProjectCard = ({ project }) => (
         viewport={{ once: true }}
         className="group relative h-[420px] rounded-[2rem] overflow-hidden cursor-pointer shadow-xl hover:shadow-2xl transition-all duration-500 bg-gray-900 border border-gray-200"
     >
-        <Link to={`/projects/${project.id}`} className="absolute inset-0 z-30"></Link>
+        <Link to={`/projects/${project._id}`} className="absolute inset-0 z-30"></Link>
         <div className="absolute inset-0 z-0">
             <img 
-                src={project.image} 
+                src={project.images?.[0] || 'https://images.unsplash.com/photo-1503387762-592dea58ef21?q=80&w=1000&auto=format&fit=crop'} 
                 alt={project.title} 
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
             />
@@ -96,6 +54,26 @@ const ProjectCard = ({ project }) => (
 );
 
 const Projects = () => {
+    const [projects, setProjects] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchProjects = async () => {
+            try {
+                const response = await fetch(`${API_URL}/projects`);
+                const data = await response.json();
+                if (response.ok) {
+                    setProjects(data);
+                }
+            } catch (err) {
+                console.error('Error fetching projects:', err);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchProjects();
+    }, []);
+
   return (
     <div className="bg-white pb-24 text-right min-h-screen">
       {/* Compact Header */}
@@ -113,9 +91,9 @@ const Projects = () => {
                 <div className="w-8 h-px bg-primary-500"></div>
                 <span className="text-primary-500 font-black uppercase tracking-[0.3em] text-[10px]">مشاريعنا ومعارضنا</span>
               </div>
-              <h1 className="text-4xl md:text-5xl font-black text-secondary-950 leading-tight">
+              <h2 className="text-4xl md:text-5xl font-black text-secondary-950 leading-tight">
                 <span className="text-secondary">معرض</span> <span className="text-primary-500">الإنجازات</span> <span className="text-secondary">والبصمات</span>
-              </h1>
+              </h2>
             </div>
             
             <div className="group bg-primary-50 px-6 py-3 rounded-full border border-primary-100 hidden md:flex items-center gap-3 transition-all hover:bg-primary-500 hover:shadow-lg hover:shadow-primary-500/20 cursor-default">
@@ -131,11 +109,17 @@ const Projects = () => {
       {/* Projects Grid */}
       <section className="py-24 relative overflow-hidden">
         <div className="container mx-auto px-4 max-w-7xl relative z-10">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {projects.map((project) => (
-              <ProjectCard key={project.id} project={project} />
-            ))}
-          </div>
+          {loading ? (
+            <div className="flex items-center justify-center py-20">
+              <Loader2 className="w-12 h-12 text-primary-500 animate-spin" />
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {projects.map((project) => (
+                <ProjectCard key={project._id} project={project} />
+                ))}
+            </div>
+          )}
         </div>
       </section>
     </div>

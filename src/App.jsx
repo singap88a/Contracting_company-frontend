@@ -24,6 +24,9 @@ import TestimonialsManagement from './dashboard/pages/TestimonialsManagement';
 import ServiceRequestsInbox from './dashboard/pages/ServiceRequestsInbox';
 import JobApplicationsInbox from './dashboard/pages/JobApplicationsInbox';
 import ContactMessagesInbox from './dashboard/pages/ContactMessagesInbox';
+import Settings from './dashboard/pages/Settings';
+import Login from './pages/Admin/Login';
+import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
   return (
@@ -44,8 +47,17 @@ function App() {
         <Route path="privacy" element={<Privacy />} />
       </Route>
 
-      {/* Admin Dashboard Routes */}
-      <Route path="/admin" element={<DashboardLayout />}>
+      {/* Admin Routes */}
+      <Route path="/admin/login" element={<Login />} />
+      
+      <Route 
+        path="/admin" 
+        element={
+          <ProtectedRoute>
+            <DashboardLayout />
+          </ProtectedRoute>
+        }
+      >
         <Route index element={<DashboardHome />} />
         <Route path="services" element={<ServicesManagement />} />
         <Route path="projects" element={<ProjectsManagement />} />
@@ -54,6 +66,7 @@ function App() {
         <Route path="service-requests" element={<ServiceRequestsInbox />} />
         <Route path="job-applications" element={<JobApplicationsInbox />} />
         <Route path="contact-messages" element={<ContactMessagesInbox />} />
+        <Route path="settings" element={<Settings />} />
       </Route>
     </Routes>
   );

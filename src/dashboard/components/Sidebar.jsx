@@ -9,8 +9,12 @@ import {
   Mail,
   UserCheck,
   Star,
+  Settings as SettingsIcon,
+  LogOut,
   X
 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 
 const Sidebar = ({ isOpen, onClose }) => {
   const menuSections = [
@@ -36,8 +40,23 @@ const Sidebar = ({ isOpen, onClose }) => {
         { path: '/admin/job-applications', icon: UserCheck, label: 'طلبات التوظيف' },
         { path: '/admin/contact-messages', icon: Mail, label: 'رسائل اتصل بنا' }
       ]
+    },
+    {
+      title: 'النظام',
+      items: [
+        { path: '/admin/settings', icon: SettingsIcon, label: 'الإعدادات' }
+      ]
     }
   ];
+
+  const navigate = useNavigate();
+
+  const { logout, user } = useAuth();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/admin/login');
+  };
 
   return (
     <>
@@ -54,12 +73,12 @@ const Sidebar = ({ isOpen, onClose }) => {
         className={`
           fixed top-0 right-0 h-full bg-gradient-to-b from-[#1a2332] to-[#2a3442] 
           w-72 z-50 transform transition-transform duration-300 ease-in-out
-          lg:translate-x-0 shadow-2xl
+          lg:translate-x-0 shadow-2xl flex flex-col
           ${isOpen ? 'translate-x-0' : 'translate-x-full'}
         `}
       >
         {/* Header */}
-        <div className="p-6 border-b border-white/10">
+        <div className="p-6 border-b border-white/10 shrink-0">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-gradient-to-br from-[#ff6b35] to-[#e55a2b] rounded-lg flex items-center justify-center">
@@ -80,7 +99,7 @@ const Sidebar = ({ isOpen, onClose }) => {
         </div>
 
         {/* Navigation */}
-        <nav className="p-4 overflow-y-auto h-[calc(100%-88px)] dashboard-scrollbar">
+        <nav className="p-4 overflow-y-auto flex-1 dashboard-scrollbar">
           {menuSections.map((section, idx) => (
             <div key={idx} className="mb-6">
               <h3 className="text-gray-400 text-xs font-semibold uppercase tracking-wider mb-3 px-3">
@@ -115,15 +134,24 @@ const Sidebar = ({ isOpen, onClose }) => {
         </nav>
 
         {/* Footer */}
-        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-white/10 bg-[#1a2332]">
+        <div className="p-4 border-t border-white/10 bg-[#1a2332] shrink-0">
           <div className="flex items-center gap-3 px-3">
             <div className="w-10 h-10 bg-gradient-to-br from-[#ff6b35] to-[#e55a2b] rounded-full flex items-center justify-center">
               <span className="text-white font-bold text-sm">A</span>
             </div>
-            <div className="flex-1">
-              <p className="text-white font-medium text-sm">المسؤول</p>
-              <p className="text-gray-400 text-xs">admin@company.com</p>
+            <div className="flex-1 overflow-hidden">
+              <p className="text-white font-medium text-sm truncate">المسؤول</p>
+              <p className="text-gray-400 text-xs truncate" title={user?.email || 'تحميل...'}>
+                {user?.email || 'admin@company.com'}
+              </p>
             </div>
+            <button 
+              onClick={handleLogout}
+              className="p-2 text-gray-400 hover:text-red-500 transition-colors"
+              title="تسجيل الخروج"
+            >
+              <LogOut className="w-5 h-5" />
+            </button>
           </div>
         </div>
       </aside>

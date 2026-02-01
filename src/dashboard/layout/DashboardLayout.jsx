@@ -19,6 +19,7 @@ const DashboardLayout = () => {
     if (path.includes('/service-requests')) return 'طلبات الخدمات';
     if (path.includes('/job-applications')) return 'طلبات التوظيف';
     if (path.includes('/contact-messages')) return 'رسائل اتصل بنا';
+    if (path.includes('/settings')) return 'إعدادات الحساب';
     return 'لوحة التحكم';
   };
 
