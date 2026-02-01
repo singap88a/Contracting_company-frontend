@@ -1,64 +1,105 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import StatCard from '../components/StatCard';
-import { Briefcase, FolderKanban, Users, MessageSquare, TrendingUp, Clock } from 'lucide-react';
+import { Briefcase, FolderKanban, Users, MessageSquare, TrendingUp, Clock, Loader2 } from 'lucide-react';
+import { API_URL } from '../../config';
+import { useAuth } from '../../context/AuthContext';
+import { Link } from 'react-router-dom';
 
 const DashboardHome = () => {
-  // Mock statistics data
-  const stats = [
+  const { token, logout } = useAuth();
+  const [stats, setStats] = useState({
+    counts: {
+      projects: 0,
+      services: 0,
+      jobs: 0,
+      applications: 0,
+      serviceRequests: 0,
+      contactMessages: 0,
+      newApplications: 0,
+      newServiceRequests: 0,
+      newContactMessages: 0
+    },
+    recentActivity: []
+  });
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchDashboardStats();
+  }, []);
+
+  const fetchDashboardStats = async () => {
+    try {
+      const response = await fetch(`${API_URL}/dashboard/stats`, {
+        headers: { 'x-auth-token': token }
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        setStats(data);
+      } else if (response.status === 401) {
+        logout();
+      }
+    } catch (err) {
+      console.error('Error fetching dashboard stats:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const statCards = [
     {
       icon: Briefcase,
-      title: 'إجمالي الخدمات',
-      value: '12',
-      change: '+8',
+      title: 'طلبات الخدمات',
+      value: stats.counts.serviceRequests,
+      change: `+${stats.counts.newServiceRequests} جديد`,
       changeType: 'increase',
       gradient: 'primary'
     },
     {
       icon: FolderKanban,
       title: 'المشاريع المنجزة',
-      value: '48',
-      change: '+12',
-      changeType: 'increase',
+      value: stats.counts.projects,
+      change: 'إجمالي',
+      changeType: 'neutral',
       gradient: 'secondary'
     },
     {
       icon: Users,
-      title: 'الوظائف المتاحة',
-      value: '6',
-      change: '+2',
+      title: 'طلبات التوظيف',
+      value: stats.counts.applications,
+      change: `+${stats.counts.newApplications} جديد`,
       changeType: 'increase',
       gradient: 'success'
     },
     {
       icon: MessageSquare,
-      title: 'الرسائل الجديدة',
-      value: '23',
-      change: '+15',
+      title: 'رسائل اتصل بنا',
+      value: stats.counts.contactMessages,
+      change: `+${stats.counts.newContactMessages} جديد`,
       changeType: 'increase',
       gradient: 'info'
     }
   ];
 
-  // Mock recent activity
-  const recentActivity = [
-    { id: 1, type: 'service_request', message: 'طلب خدمة جديد من أحمد محمد', time: 'منذ 5 دقائق', icon: MessageSquare, color: 'text-blue-600' },
-    { id: 2, type: 'job_application', message: 'تقديم جديد على وظيفة مهندس مدني', time: 'منذ 15 دقيقة', icon: Users, color: 'text-green-600' },
-    { id: 3, type: 'contact', message: 'رسالة جديدة في اتصل بنا', time: 'منذ ساعة', icon: MessageSquare, color: 'text-orange-600' },
-    { id: 4, type: 'project', message: 'تم إضافة مشروع جديد', time: 'منذ ساعتين', icon: FolderKanban, color: 'text-purple-600' },
-    { id: 5, type: 'service', message: 'تم تحديث خدمة البناء والتشييد', time: 'منذ 3 ساعات', icon: Briefcase, color: 'text-indigo-600' }
-  ];
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center p-20">
+        <Loader2 className="w-10 h-10 text-orange-500 animate-spin" />
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
       {/* Welcome Section */}
-      <div className="bg-gradient-to-r from-[#1a2332] to-[#2a3442] rounded-xl p-8 text-white">
+      <div className="bg-gradient-to-r from-[#1a2332] to-[#2a3442] rounded-xl p-8 text-white shadow-lg">
         <h2 className="text-3xl font-bold mb-2">مرحباً بك في لوحة التحكم! 👋</h2>
-        <p className="text-gray-300">إليك نظرة عامة على نشاط موقعك اليوم</p>
+        <p className="text-gray-300">إليك نظرة عامة شاملة على نشاط موقعك اليوم</p>
       </div>
 
       {/* Statistics Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {stats.map((stat, idx) => (
+        {statCards.map((stat, idx) => (
           <StatCard key={idx} {...stat} />
         ))}
       </div>
@@ -68,21 +109,35 @@ const DashboardHome = () => {
         {/* Recent Activity */}
         <div className="dashboard-card p-6">
           <div className="flex items-center justify-between mb-6">
-            <h3 className="text-xl font-bold text-[#1a2332]">النشاط الأخير</h3>
+            <h3 className="text-xl font-bold text-[#1a2332]">آخر النشاطات</h3>
             <Clock className="w-5 h-5 text-gray-400" />
           </div>
           <div className="space-y-4">
-            {recentActivity.map((activity) => (
-              <div key={activity.id} className="flex items-start gap-4 p-3 hover:bg-gray-50 rounded-lg transition-colors">
-                <div className={`p-2 rounded-lg bg-gray-100 ${activity.color}`}>
-                  <activity.icon className="w-5 h-5" />
+            {stats.recentActivity.length > 0 ? (
+              stats.recentActivity.map((activity, index) => (
+                <div key={index} className="flex items-start gap-4 p-3 hover:bg-gray-50 rounded-lg transition-colors border-b border-gray-50 last:border-0">
+                  <div className={`p-2 rounded-lg bg-gray-100 ${
+                    activity.type === 'service_request' ? 'text-blue-600' :
+                    activity.type === 'job_application' ? 'text-green-600' :
+                    activity.type === 'contact' ? 'text-orange-600' :
+                    'text-purple-600'
+                  }`}>
+                    {activity.type === 'service_request' ? <Briefcase className="w-5 h-5" /> :
+                     activity.type === 'job_application' ? <Users className="w-5 h-5" /> :
+                     activity.type === 'contact' ? <MessageSquare className="w-5 h-5" /> :
+                     <FolderKanban className="w-5 h-5" />}
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-sm font-bold text-gray-800">{activity.message}</p>
+                    <p className="text-xs text-gray-500 mt-1" dir="ltr">
+                      {new Date(activity.time).toLocaleString('ar-SA')}
+                    </p>
+                  </div>
                 </div>
-                <div className="flex-1">
-                  <p className="text-sm font-medium text-gray-900">{activity.message}</p>
-                  <p className="text-xs text-gray-500 mt-1">{activity.time}</p>
-                </div>
-              </div>
-            ))}
+              ))
+            ) : (
+              <p className="text-center text-gray-500 py-4">لا توجد نشاطات حديثة</p>
+            )}
           </div>
         </div>
 
@@ -93,22 +148,22 @@ const DashboardHome = () => {
             <TrendingUp className="w-5 h-5 text-gray-400" />
           </div>
           <div className="grid grid-cols-2 gap-4">
-            <button className="p-4 bg-gradient-to-br from-[#ff6b35] to-[#e55a2b] text-white rounded-xl hover:shadow-lg transition-all hover:scale-105">
+            <Link to="/admin/services" className="p-4 bg-gradient-to-br from-[#ff6b35] to-[#e55a2b] text-white rounded-xl hover:shadow-lg transition-all hover:scale-[1.02] flex flex-col items-center justify-center text-center">
               <Briefcase className="w-8 h-8 mb-2" />
-              <p className="font-semibold">إضافة خدمة</p>
-            </button>
-            <button className="p-4 bg-gradient-to-br from-[#1a2332] to-[#2a3442] text-white rounded-xl hover:shadow-lg transition-all hover:scale-105">
+              <p className="font-semibold">إدارة الخدمات</p>
+            </Link>
+            <Link to="/admin/projects" className="p-4 bg-gradient-to-br from-[#1a2332] to-[#2a3442] text-white rounded-xl hover:shadow-lg transition-all hover:scale-[1.02] flex flex-col items-center justify-center text-center">
               <FolderKanban className="w-8 h-8 mb-2" />
-              <p className="font-semibold">إضافة مشروع</p>
-            </button>
-            <button className="p-4 bg-gradient-to-br from-[#10b981] to-[#059669] text-white rounded-xl hover:shadow-lg transition-all hover:scale-105">
+              <p className="font-semibold">إدارة المشاريع</p>
+            </Link>
+            <Link to="/admin/jobs" className="p-4 bg-gradient-to-br from-[#10b981] to-[#059669] text-white rounded-xl hover:shadow-lg transition-all hover:scale-[1.02] flex flex-col items-center justify-center text-center">
               <Users className="w-8 h-8 mb-2" />
-              <p className="font-semibold">إضافة وظيفة</p>
-            </button>
-            <button className="p-4 bg-gradient-to-br from-[#3b82f6] to-[#2563eb] text-white rounded-xl hover:shadow-lg transition-all hover:scale-105">
+              <p className="font-semibold">إدارة الوظائف</p>
+            </Link>
+            <Link to="/admin/contact-messages" className="p-4 bg-gradient-to-br from-[#3b82f6] to-[#2563eb] text-white rounded-xl hover:shadow-lg transition-all hover:scale-[1.02] flex flex-col items-center justify-center text-center">
               <MessageSquare className="w-8 h-8 mb-2" />
-              <p className="font-semibold">عرض الرسائل</p>
-            </button>
+              <p className="font-semibold">رسائل العملاء</p>
+            </Link>
           </div>
         </div>
       </div>

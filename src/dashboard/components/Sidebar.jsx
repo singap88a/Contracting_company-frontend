@@ -16,7 +16,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 
-const Sidebar = ({ isOpen, onClose }) => {
+const Sidebar = ({ isOpen, onClose, stats }) => {
   const menuSections = [
     {
       title: 'لوحة التحكم',
@@ -36,9 +36,24 @@ const Sidebar = ({ isOpen, onClose }) => {
     {
       title: 'صندوق الوارد',
       items: [
-        { path: '/admin/service-requests', icon: MessageSquare, label: 'طلبات الخدمات' },
-        { path: '/admin/job-applications', icon: UserCheck, label: 'طلبات التوظيف' },
-        { path: '/admin/contact-messages', icon: Mail, label: 'رسائل اتصل بنا' }
+        { 
+            path: '/admin/service-requests', 
+            icon: MessageSquare, 
+            label: 'طلبات الخدمات',
+            badge: stats?.counts?.newServiceRequests
+        },
+        { 
+            path: '/admin/job-applications', 
+            icon: UserCheck, 
+            label: 'طلبات التوظيف',
+            badge: stats?.counts?.newApplications
+        },
+        { 
+            path: '/admin/contact-messages', 
+            icon: Mail, 
+            label: 'رسائل اتصل بنا',
+            badge: stats?.counts?.newContactMessages
+        }
       ]
     },
     {
@@ -113,7 +128,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                     end={item.exact}
                     onClick={() => window.innerWidth < 1024 && onClose()}
                     className={({ isActive }) => `
-                      flex items-center gap-3 px-3 py-3 rounded-lg transition-all duration-200
+                      flex items-center justify-between px-3 py-3 rounded-lg transition-all duration-200 group
                       ${isActive 
                         ? 'bg-gradient-to-r from-[#ff6b35] to-[#e55a2b] text-white shadow-lg shadow-orange-500/30' 
                         : 'text-gray-300 hover:bg-white/5 hover:text-white'
@@ -122,8 +137,18 @@ const Sidebar = ({ isOpen, onClose }) => {
                   >
                     {({ isActive }) => (
                       <>
-                        <item.icon className={`w-5 h-5 ${isActive ? 'animate-pulse' : ''}`} />
-                        <span className="font-medium">{item.label}</span>
+                        <div className="flex items-center gap-3">
+                            <item.icon className={`w-5 h-5 ${isActive ? 'animate-pulse' : ''}`} />
+                            <span className="font-medium">{item.label}</span>
+                        </div>
+                        {item.badge > 0 && (
+                            <span className={`
+                                text-[10px] font-bold px-2 py-0.5 rounded-full
+                                ${isActive ? 'bg-white text-[#ff6b35]' : 'bg-[#ff6b35] text-white'}
+                            `}>
+                                {item.badge}
+                            </span>
+                        )}
                       </>
                     )}
                   </NavLink>
