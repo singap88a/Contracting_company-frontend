@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import DataTable from '../components/DataTable';
 import Modal from '../components/Modal';
 import FormInput from '../components/FormInput';
-import { Plus, X, Upload, Loader2 } from 'lucide-react';
+import { Plus, X, Upload, Loader2, AlertCircle } from 'lucide-react';
 import { API_URL } from '../../config';
+import { useAuth } from '../../context/AuthContext';
 
 const ProjectsManagement = () => {
+  const { token, logout } = useAuth();
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -112,6 +114,12 @@ const ProjectsManagement = () => {
         setProjects(projects.filter(p => p.id !== projectToDelete.id));
         setIsDeleteModalOpen(false);
         setProjectToDelete(null);
+      } else if (response.status === 401) {
+        alert('انتهت صلاحية الجلسة، يرجى تسجيل الدخول مرة أخرى.');
+        logout();
+      } else {
+        const errorData = await response.json();
+        alert(errorData.msg || 'حدث خطأ أثناء حذف المشروع.');
       }
     } catch (err) {
       console.error('Error deleting project:', err);
@@ -160,9 +168,16 @@ const ProjectsManagement = () => {
       if (response.ok) {
         await fetchProjects();
         setIsModalOpen(false);
+      } else if (response.status === 401) {
+        alert('انتهت صلاحية الجلسة، يرجى تسجيل الدخول مرة أخرى.');
+        logout();
+      } else {
+        const errorData = await response.json();
+        alert(errorData.msg || 'حدث خطأ أثناء حفظ المشروع.');
       }
     } catch (err) {
       console.error('Error saving project:', err);
+      alert('حدث خطأ في الاتصال بالسيرفر.');
     } finally {
       setLoading(false);
     }

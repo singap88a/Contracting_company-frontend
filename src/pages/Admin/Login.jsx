@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Lock, Mail, ArrowRight, Loader2 } from 'lucide-react';
@@ -11,7 +11,13 @@ const Login = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const navigate = useNavigate();
-    const { login } = useAuth();
+    const { login, isAuthenticated } = useAuth();
+
+    useEffect(() => {
+        if (isAuthenticated) {
+            navigate('/admin');
+        }
+    }, [isAuthenticated, navigate]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -30,6 +36,7 @@ const Login = () => {
             const data = await response.json();
 
             if (response.ok) {
+                console.log('Login successful, fetching user data...');
                 try {
                     // Fetch user info to store in context
                     const userRes = await fetch(`${API_URL}/auth/me`, {
@@ -39,6 +46,9 @@ const Login = () => {
                     let userData = null;
                     if (userRes.ok) {
                         userData = await userRes.json();
+                        console.log('User data fetched successfully:', userData.email);
+                    } else {
+                        console.warn('Failed to fetch user data, status:', userRes.status);
                     }
                     
                     login(data.token, userData);
@@ -50,6 +60,7 @@ const Login = () => {
                     navigate('/admin');
                 }
             } else {
+                console.warn('Login failed:', data.msg);
                 setError(data.msg || 'بيانات الدخول غير صحيحة');
             }
         } catch (err) {

@@ -141,8 +141,8 @@ const Sidebar = ({ isOpen, onClose }) => {
             </div>
             <div className="flex-1 overflow-hidden">
               <p className="text-white font-medium text-sm truncate">المسؤول</p>
-              <p className="text-gray-400 text-xs truncate" title={user?.email || 'تحميل...'}>
-                {user?.email || 'admin@company.com'}
+              <p className="text-gray-400 text-xs truncate" title={user?.email || ''}>
+                {user?.email || 'جاري التحميل...'}
               </p>
             </div>
             <button 

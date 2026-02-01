@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import { Save, User, Lock, Loader2, CheckCircle } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { API_URL } from '../../config';
