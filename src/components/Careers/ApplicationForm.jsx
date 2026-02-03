@@ -108,6 +108,35 @@ const ApplicationForm = ({ selectedJob }) => {
         </h3>
         <p className="text-gray-500 mb-8">يرجى تعبئة النموذج أدناه وسيتم التواصل معك في أقرب وقت.</p>
 
+        {selectedJob && (
+          <div className="mb-10 p-6 bg-gray-50/50 rounded-2xl border border-gray-100 space-y-6">
+            <div>
+              <h4 className="font-bold text-secondary-900 mb-2 flex items-center gap-2">
+                <div className="w-1.5 h-6 bg-primary-500 rounded-full"></div>
+                الوصف الوظيفي
+              </h4>
+              <p className="text-gray-600 leading-relaxed mr-3">{selectedJob.description}</p>
+            </div>
+            
+            {selectedJob.requirements && selectedJob.requirements.length > 0 && (
+              <div>
+                <h4 className="font-bold text-secondary-900 mb-3 flex items-center gap-2">
+                  <div className="w-1.5 h-6 bg-primary-500 rounded-full"></div>
+                  المتطلبات
+                </h4>
+                <ul className="space-y-2 mr-3">
+                  {selectedJob.requirements.map((req, idx) => (
+                    <li key={idx} className="flex items-start gap-2 text-gray-600">
+                      <div className="mt-2 w-1.5 h-1.5 rounded-full bg-primary-300 flex-shrink-0"></div>
+                      <span>{req}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+        )}
+
         {status.type === 'error' && (
           <div className="mb-6 p-4 bg-red-50 text-red-600 rounded-xl flex items-center gap-2 border border-red-100">
             <AlertCircle size={20} />

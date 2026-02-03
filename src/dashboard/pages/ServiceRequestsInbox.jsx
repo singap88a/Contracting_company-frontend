@@ -8,11 +8,21 @@ import { Loader2 } from 'lucide-react';
 const ServiceRequestsInbox = () => {
   const { token, logout } = useAuth();
   const [requests, setRequests] = useState([]);
+  const [filteredRequests, setFilteredRequests] = useState([]);
+  const [activeFilter, setActiveFilter] = useState('all');
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchRequests();
   }, []);
+
+  useEffect(() => {
+    if (activeFilter === 'all') {
+      setFilteredRequests(requests);
+    } else {
+      setFilteredRequests(requests.filter(r => r.category === activeFilter));
+    }
+  }, [activeFilter, requests]);
 
   const fetchRequests = async () => {
     try {
@@ -23,7 +33,9 @@ const ServiceRequestsInbox = () => {
       });
       if (response.ok) {
         const data = await response.json();
-        setRequests(data.map(r => ({ ...r, id: r._id })));
+        const mappedData = data.map(r => ({ ...r, id: r._id }));
+        setRequests(mappedData);
+        setFilteredRequests(mappedData);
       } else if (response.status === 401) {
         logout();
       }
@@ -39,6 +51,11 @@ const ServiceRequestsInbox = () => {
 
   const columns = [
     { key: 'fullName', label: 'الاسم الكامل', sortable: true },
+    { 
+      key: 'category', 
+      label: 'القسم',
+      render: (cat) => cat === 'safety' ? 'السلامة' : (cat === 'contracting' ? 'المقاولات' : '-')
+    },
     { key: 'mobile', label: 'رقم الجوال' },
     { key: 'serviceType', label: 'نوع الخدمة' },
     { key: 'city', label: 'المدينة' },
@@ -97,6 +114,40 @@ const ServiceRequestsInbox = () => {
         <p className="text-gray-600 mt-1">جميع طلبات الخدمات الواردة من العملاء</p>
       </div>
 
+      {/* Category Filters */}
+      <div className="flex flex-wrap items-center gap-2">
+        <button
+          onClick={() => setActiveFilter('all')}
+          className={`px-6 py-2 rounded-xl text-sm font-bold transition-all ${
+            activeFilter === 'all'
+              ? 'bg-[#1a2332] text-white shadow-lg'
+              : 'bg-white text-gray-600 hover:bg-gray-50 border border-gray-100'
+          }`}
+        >
+          الكل
+        </button>
+        <button
+          onClick={() => setActiveFilter('contracting')}
+          className={`px-6 py-2 rounded-xl text-sm font-bold transition-all ${
+            activeFilter === 'contracting'
+              ? 'bg-blue-600 text-white shadow-lg'
+              : 'bg-white text-gray-600 hover:bg-gray-50 border border-gray-100'
+          }`}
+        >
+          قسم المقاولات
+        </button>
+        <button
+          onClick={() => setActiveFilter('safety')}
+          className={`px-6 py-2 rounded-xl text-sm font-bold transition-all ${
+            activeFilter === 'safety'
+              ? 'bg-orange-600 text-white shadow-lg'
+              : 'bg-white text-gray-600 hover:bg-gray-50 border border-gray-100'
+          }`}
+        >
+          قسم السلامة
+        </button>
+      </div>
+
       {/* Statistics */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="dashboard-card p-4">
@@ -128,7 +179,7 @@ const ServiceRequestsInbox = () => {
         ) : (
           <DataTable
             columns={columns}
-            data={requests}
+            data={filteredRequests}
             onEdit={handleView}
           />
         )}
@@ -173,7 +224,8 @@ const ServiceRequestsInbox = () => {
                 <div>
                   <p className="text-sm text-gray-600">نوع الخدمة</p>
                   <p className="font-semibold bg-blue-50 text-blue-700 px-3 py-2 rounded-lg inline-block">
-                    {selectedRequest.serviceType}
+                    {selectedRequest.serviceType} 
+                    {selectedRequest.category && ` (${selectedRequest.category === 'safety' ? 'سلامة' : 'مقاولات'})`}
                   </p>
                 </div>
                 <div>

@@ -19,8 +19,11 @@ const Careers = () => {
       const response = await fetch(`${API_URL}/jobs`);
       if (response.ok) {
         const data = await response.json();
-        // Only show open jobs
-        setJobs(data.filter(j => j.status === 'Open').map(j => ({ ...j, id: j._id })));
+        const openJobs = data.filter(j => j.status === 'Open').map(j => ({ ...j, id: j._id }));
+        setJobs(openJobs);
+        if (openJobs.length > 0) {
+          setSelectedJob(openJobs[0]);
+        }
       }
     } catch (err) {
       console.error('Error fetching jobs:', err);

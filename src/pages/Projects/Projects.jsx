@@ -55,6 +55,8 @@ const ProjectCard = ({ project }) => (
 
 const Projects = () => {
     const [projects, setProjects] = useState([]);
+    const [filteredProjects, setFilteredProjects] = useState([]);
+    const [activeFilter, setActiveFilter] = useState('all');
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -64,6 +66,7 @@ const Projects = () => {
                 const data = await response.json();
                 if (response.ok) {
                     setProjects(data);
+                    setFilteredProjects(data);
                 }
             } catch (err) {
                 console.error('Error fetching projects:', err);
@@ -73,6 +76,20 @@ const Projects = () => {
         };
         fetchProjects();
     }, []);
+
+    useEffect(() => {
+        if (activeFilter === 'all') {
+            setFilteredProjects(projects);
+        } else {
+            setFilteredProjects(projects.filter(p => p.category === activeFilter));
+        }
+    }, [activeFilter, projects]);
+
+    const filters = [
+        { id: 'all', label: 'الكل' },
+        { id: 'contracting', label: 'قسم المقاولات' },
+        { id: 'safety', label: 'قسم السلامة' }
+    ];
 
   return (
     <div className="bg-white pb-24 text-right min-h-screen">
@@ -106,8 +123,38 @@ const Projects = () => {
         </div>
       </section>
 
+      {/* Simplified Grouped Filters */}
+      <section className="pt-12 pb-8 bg-white z-40 border-b border-gray-100/50 backdrop-blur-md">
+        <div className="container mx-auto px-4 max-w-7xl">
+            <div className="flex justify-center">
+                <div className="inline-flex p-1.5 bg-gray-100/80 rounded-[2rem] backdrop-blur-xl border border-gray-200 shadow-inner">
+                    {filters.map((filter) => (
+                        <button
+                            key={filter.id}
+                            onClick={() => setActiveFilter(filter.id)}
+                            className={`relative px-8 md:px-12 py-3.5 rounded-[1.7rem] text-sm font-bold transition-all duration-500 whitespace-nowrap ${
+                                activeFilter === filter.id
+                                    ? 'bg-secondary-900 text-white shadow-xl shadow-secondary-900/20'
+                                    : 'text-secondary-600 hover:text-secondary-900'
+                            }`}
+                        >
+                            {activeFilter === filter.id && (
+                                <motion.div 
+                                    layoutId="activePill"
+                                    className="absolute inset-0 bg-secondary-900 rounded-[1.7rem] -z-10"
+                                    transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                                />
+                            )}
+                            <span className="relative z-10">{filter.label}</span>
+                        </button>
+                    ))}
+                </div>
+            </div>
+        </div>
+      </section>
+
       {/* Projects Grid */}
-      <section className="py-24 relative overflow-hidden">
+      <section className="py-16 relative overflow-hidden">
         <div className="container mx-auto px-4 max-w-7xl relative z-10">
           {loading ? (
             <div className="flex items-center justify-center py-20">
@@ -115,7 +162,7 @@ const Projects = () => {
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {projects.map((project) => (
+                {filteredProjects.map((project) => (
                 <ProjectCard key={project._id} project={project} />
                 ))}
             </div>

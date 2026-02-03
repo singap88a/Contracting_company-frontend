@@ -11,6 +11,7 @@ const ServiceForm = () => {
     mobile: '',
     email: '',
     serviceType: '',
+    category: '',
     city: '',
     budget: '',
     area: '',
@@ -25,7 +26,11 @@ const ServiceForm = () => {
           const data = await response.json();
           setServices(data);
           if (data.length > 0) {
-            setFormData(prev => ({ ...prev, serviceType: data[0].name }));
+            setFormData(prev => ({ 
+              ...prev, 
+              serviceType: data[0].name,
+              category: data[0].category
+            }));
           }
         }
       } catch (err) {
@@ -36,7 +41,17 @@ const ServiceForm = () => {
   }, []);
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    if (name === 'serviceType') {
+      const selectedService = services.find(s => s.name === value);
+      setFormData(prev => ({ 
+        ...prev, 
+        serviceType: value,
+        category: selectedService ? selectedService.category : ''
+      }));
+    } else {
+      setFormData(prev => ({ ...prev, [name]: value }));
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -58,6 +73,7 @@ const ServiceForm = () => {
           mobile: '',
           email: '',
           serviceType: services[0]?.name || '',
+          category: services[0]?.category || '',
           city: '',
           budget: '',
           area: '',

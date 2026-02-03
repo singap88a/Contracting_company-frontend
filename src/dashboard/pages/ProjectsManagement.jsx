@@ -25,7 +25,7 @@ const ProjectsManagement = () => {
           ...p,
           id: p._id, // Use MongoDB _id
           name: p.title,
-          sector: p.category,
+          category: p.category,
           executionYear: p.year,
           totalArea: p.area,
           technicalFeatures: p.features || []
@@ -45,7 +45,7 @@ const ProjectsManagement = () => {
   const [editingProject, setEditingProject] = useState(null);
   const [formData, setFormData] = useState({
     name: '',
-    sector: '',
+    category: 'contracting',
     description: '',
     client: '',
     executionYear: new Date().getFullYear().toString(),
@@ -57,7 +57,12 @@ const ProjectsManagement = () => {
 
   const columns = [
     { key: 'name', label: 'اسم المشروع', sortable: true },
-    { key: 'sector', label: 'نوع القطاع', sortable: true },
+    { 
+      key: 'category', 
+      label: 'القسم', 
+      sortable: true,
+      render: (cat) => cat === 'safety' ? 'قسم السلامة' : 'قسم المقاولات'
+    },
     { key: 'client', label: 'العميل' },
     { key: 'location', label: 'الموقع' },
     { key: 'executionYear', label: 'سنة التنفيذ', sortable: true },
@@ -72,7 +77,7 @@ const ProjectsManagement = () => {
     setEditingProject(null);
     setFormData({
       name: '',
-      sector: '',
+      category: 'contracting',
       description: '',
       client: '',
       executionYear: new Date().getFullYear().toString(),
@@ -138,7 +143,7 @@ const ProjectsManagement = () => {
     // Map frontend fields to backend
     const projectData = {
       title: formData.name,
-      category: formData.sector,
+      category: formData.category,
       description: formData.description,
       client: formData.client,
       year: formData.executionYear,
@@ -322,18 +327,14 @@ const ProjectsManagement = () => {
               />
 
               <FormInput
-                label="نوع القطاع"
-                name="sector"
+                label="القسم"
+                name="category"
                 type="select"
-                value={formData.sector}
+                value={formData.category}
                 onChange={handleChange}
                 options={[
-                  { value: 'سكني', label: 'سكني' },
-                  { value: 'تجاري', label: 'تجاري' },
-                  { value: 'صناعي', label: 'صناعي' },
-                  { value: 'حكومي', label: 'حكومي' },
-                  { value: 'تعليمي', label: 'تعليمي' },
-                  { value: 'صحي', label: 'صحي' }
+                  { value: 'contracting', label: 'قسم المقاولات' },
+                  { value: 'safety', label: 'قسم السلامة' }
                 ]}
                 required
               />

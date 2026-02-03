@@ -6,6 +6,8 @@ import { API_URL } from '../../config';
 
 const ServicesList = () => {
   const [services, setServices] = useState([]);
+  const [filteredServices, setFilteredServices] = useState([]);
+  const [activeFilter, setActiveFilter] = useState('all');
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -14,7 +16,7 @@ const ServicesList = () => {
         const response = await fetch(`${API_URL}/services`);
         if (response.ok) {
           const data = await response.json();
-          setServices(data.map(s => ({
+          const mappedData = data.map(s => ({
             ...s,
             id: s._id,
             title: s.name,
@@ -22,7 +24,9 @@ const ServicesList = () => {
             // Use emoji if available, else fallback icon component
             iconDisplay: s.icon ? s.icon : <Building2 size={32} strokeWidth={1.5} />,
             image: s.image || 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1000&auto=format&fit=crop'
-          })));
+          }));
+          setServices(mappedData);
+          setFilteredServices(mappedData);
         }
       } catch (err) {
         console.error('Error fetching services:', err);
@@ -34,6 +38,20 @@ const ServicesList = () => {
     fetchServices();
   }, []);
 
+  useEffect(() => {
+    if (activeFilter === 'all') {
+      setFilteredServices(services);
+    } else {
+      setFilteredServices(services.filter(s => s.category === activeFilter));
+    }
+  }, [activeFilter, services]);
+
+  const filters = [
+    { id: 'all', label: 'الكل' },
+    { id: 'contracting', label: 'قسم المقاولات' },
+    { id: 'safety', label: 'قسم السلامة' }
+  ];
+
   if (loading) {
     return (
       <div className="flex items-center justify-center py-24">
@@ -43,9 +61,35 @@ const ServicesList = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 max-w-7xl relative z-10 py-24">
+    <div className="container mx-auto px-4 max-w-7xl relative z-10 py-12">
+      {/* Simplified Grouped Filters */}
+      <div className="flex justify-center mb-20 px-4">
+        <div className="inline-flex p-1.5 bg-gray-100/80 rounded-[2rem] backdrop-blur-xl border border-gray-200 shadow-inner">
+          {filters.map((filter) => (
+            <button
+              key={filter.id}
+              onClick={() => setActiveFilter(filter.id)}
+              className={`relative px-8 md:px-12 py-3.5 rounded-[1.7rem] text-sm font-bold transition-all duration-500 whitespace-nowrap ${
+                activeFilter === filter.id
+                  ? 'bg-secondary-900 text-white shadow-xl shadow-secondary-900/20'
+                  : 'text-secondary-600 hover:text-secondary-900'
+              }`}
+            >
+              {activeFilter === filter.id && (
+                <motion.div 
+                  layoutId="activePillServices"
+                  className="absolute inset-0 bg-secondary-900 rounded-[1.7rem] -z-10"
+                  transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                />
+              )}
+              <span className="relative z-10">{filter.label}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-        {services.map((service, index) => (
+        {filteredServices.map((service, index) => (
           <Link to="/request-service" key={service.id}>
             <motion.div
               initial={{ opacity: 0, y: 30 }}

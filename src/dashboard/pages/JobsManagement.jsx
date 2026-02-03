@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import DataTable from '../components/DataTable';
 import Modal from '../components/Modal';
 import FormInput from '../components/FormInput';
-import { Plus, Loader2, Trash2, AlertTriangle } from 'lucide-react';
+import { Plus, X, Loader2, Trash2, AlertTriangle } from 'lucide-react';
 import { API_URL } from '../../config';
 import { useAuth } from '../../context/AuthContext';
 
@@ -18,7 +18,7 @@ const JobsManagement = () => {
   const [formData, setFormData] = useState({
     title: '',
     description: '',
-    requirements: '',
+    requirements: [''],
     location: '',
     type: 'Full-time',
     status: 'Open'
@@ -45,7 +45,19 @@ const JobsManagement = () => {
   const columns = [
     { key: 'title', label: 'العنوان', sortable: true },
     { key: 'location', label: 'الموقع', sortable: true },
-    { key: 'type', label: 'نوع الدوام' },
+    { 
+      key: 'type', 
+      label: 'نوع الدوام',
+      render: (type) => {
+        const types = {
+          'Full-time': 'دوام كامل',
+          'Part-time': 'دوام جزئي',
+          'Contract': 'عقد مشروع',
+          'Internship': 'تدريب'
+        };
+        return types[type] || type;
+      }
+    },
     { 
       key: 'status', 
       label: 'الحالة',
@@ -62,7 +74,7 @@ const JobsManagement = () => {
     setFormData({
       title: '',
       description: '',
-      requirements: '',
+      requirements: [''],
       location: '',
       type: 'Full-time',
       status: 'Open'
@@ -74,7 +86,7 @@ const JobsManagement = () => {
     setEditingJob(job);
     setFormData({
       ...job,
-      requirements: Array.isArray(job.requirements) ? job.requirements.join('\n') : job.requirements
+      requirements: Array.isArray(job.requirements) && job.requirements.length > 0 ? job.requirements : ['']
     });
     setIsModalOpen(true);
   };
@@ -116,7 +128,7 @@ const JobsManagement = () => {
 
     const payload = {
       ...formData,
-      requirements: formData.requirements.split('\n').filter(r => r.trim() !== '')
+      requirements: formData.requirements.filter(r => r.trim() !== '')
     };
 
     try {
@@ -139,6 +151,26 @@ const JobsManagement = () => {
       console.error('Error saving job:', err);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleRequirementChange = (index, value) => {
+    const newReqs = [...formData.requirements];
+    newReqs[index] = value;
+    setFormData(prev => ({ ...prev, requirements: newReqs }));
+  };
+
+  const addRequirement = () => {
+    setFormData(prev => ({
+      ...prev,
+      requirements: [...prev.requirements, '']
+    }));
+  };
+
+  const removeRequirement = (index) => {
+    if (formData.requirements.length > 1) {
+      const newReqs = formData.requirements.filter((_, i) => i !== index);
+      setFormData(prev => ({ ...prev, requirements: newReqs }));
     }
   };
 
@@ -242,15 +274,41 @@ const JobsManagement = () => {
             required
           />
 
-          <FormInput
-            label="المتطلبات (كل مطلب في سطر جديد)"
-            name="requirements"
-            type="textarea"
-            value={formData.requirements}
-            onChange={handleChange}
-            placeholder="مثال: خبرة 5 سنوات..."
-            rows={4}
-          />
+          <div className="mb-6">
+            <div className="flex items-center justify-between mb-4">
+              <label className="text-sm font-bold text-gray-700">المتطلبات الوظيفية</label>
+              <button
+                type="button"
+                onClick={addRequirement}
+                className="text-sm text-[#ff6b35] hover:text-[#e55a2b] font-medium flex items-center gap-1"
+              >
+                <Plus className="w-4 h-4" />
+                إضافة متطلب
+              </button>
+            </div>
+            <div className="space-y-3">
+              {formData.requirements.map((req, index) => (
+                <div key={index} className="flex items-center gap-2">
+                  <input
+                    type="text"
+                    value={req}
+                    onChange={(e) => handleRequirementChange(index, e.target.value)}
+                    placeholder="مثال: خبرة 5 سنوات في الهندسة المدنية"
+                    className="dashboard-input flex-1"
+                  />
+                  {formData.requirements.length > 1 && (
+                    <button
+                      type="button"
+                      onClick={() => removeRequirement(index)}
+                      className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                    >
+                      <X className="w-5 h-5" />
+                    </button>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
 
           <div className="flex items-center gap-3 mt-6">
             <button type="submit" className="dashboard-btn dashboard-btn-primary flex-1">

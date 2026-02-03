@@ -37,7 +37,8 @@ const ServicesManagement = () => {
     name: '',
     description: '',
     icon: '🏗️',
-    image: null
+    image: null,
+    category: 'contracting'
   });
 
   const commonEmojis = [
@@ -53,12 +54,18 @@ const ServicesManagement = () => {
       render: (icon) => <span className="text-2xl bg-gray-50 w-12 h-12 flex items-center justify-center rounded-xl">{icon}</span>
     },
     { key: 'name', label: 'اسم الخدمة', sortable: true },
+    { 
+      key: 'category', 
+      label: 'القسم',
+      sortable: true,
+      render: (cat) => cat === 'safety' ? 'قسم السلامة' : 'قسم المقاولات'
+    },
     { key: 'description', label: 'الوصف' }
   ];
 
   const handleAdd = () => {
     setEditingService(null);
-    setFormData({ name: '', description: '', icon: '', image: null });
+    setFormData({ name: '', description: '', icon: '', image: null, category: 'contracting' });
     setIsModalOpen(true);
   };
 
@@ -123,7 +130,7 @@ const ServicesManagement = () => {
       if (response.ok) {
         await fetchServices();
         setIsModalOpen(false);
-        setFormData({ name: '', description: '', icon: '', image: null });
+        setFormData({ name: '', description: '', icon: '', image: null, category: 'contracting' });
       } else if (response.status === 401) {
         alert('انتهت صلاحية الجلسة، يرجى تسجيل الدخول مرة أخرى.');
         logout();
@@ -204,6 +211,19 @@ const ServicesManagement = () => {
             onChange={handleChange}
             placeholder="وصف تفصيلي للخدمة..."
             rows={4}
+            required
+          />
+
+          <FormInput
+            label="القسم"
+            name="category"
+            type="select"
+            value={formData.category}
+            onChange={handleChange}
+            options={[
+              { value: 'contracting', label: 'قسم المقاولات' },
+              { value: 'safety', label: 'قسم السلامة' }
+            ]}
             required
           />
 
