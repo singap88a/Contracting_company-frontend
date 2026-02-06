@@ -6,17 +6,33 @@ import 'swiper/css';
 
 const Brands = () => {
   const brands = [
-    'https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg',
-    'https://upload.wikimedia.org/wikipedia/commons/5/51/IBM_logo.svg',
-    'https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg',
-    'https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg',
-    'https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg',
-    'https://upload.wikimedia.org/wikipedia/commons/c/ce/Coca-Cola_logo.svg',
-    'https://upload.wikimedia.org/wikipedia/commons/2/24/Samsung_Logo.svg',
+    '/prand_img/Picture1.png',
+    '/prand_img/Picture2.png',
+    '/prand_img/Picture3.png',
+    '/prand_img/Picture4.png',
+    '/prand_img/Picture5.png',
+    '/prand_img/Picture6.png',
+    '/prand_img/Picture7.png',
+    '/prand_img/Picture8.png',
+    '/prand_img/Picture9.png',
+    '/prand_img/Picture10.png',
+    '/prand_img/Picture11.png',
+    '/prand_img/Picture12.png',
+    '/prand_img/Picture13.png',
+    '/prand_img/Picture14.png',
+    '/prand_img/Picture15.png',
+    '/prand_img/Picture16.png',
+    '/prand_img/Picture17.png',
+    '/prand_img/Picture18.png',
+    '/prand_img/Picture19.png',
+    '/prand_img/Picture20.png',
+    '/prand_img/Picture21.png',
+    '/prand_img/Picture22.png',
+    '/prand_img/Picture23.png',
   ];
 
   return (
-    <section className="py-12 bg-gray-50 border-b border-gray-100">
+    <section className="py-4 bg-gray-50 border-b border-gray-100">
        <Swiper
          modules={[Autoplay]}
          spaceBetween={60}
@@ -40,7 +56,7 @@ const Brands = () => {
              <img 
                src={logo} 
                alt={`Brand ${index}`} 
-               className="h-8 md:h-10 w-auto object-contain transition-all duration-300 filter brightness-100 opacity-80 hover:opacity-100" 
+               className="h-[100px] w-auto object-contain transition-all duration-300 filter brightness-100 opacity-80 hover:opacity-100" 
              />
            </SwiperSlide>
          ))}
