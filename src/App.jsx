@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
-import SplashScreen from './components/Common/SplashScreen';
+import SplashScreen from './components/common/SplashScreen';
 import Layout from './components/layout/Layout';
 import Home from './pages/Home/Home';
 import About from './pages/About/About';
