@@ -21,7 +21,7 @@ const Hero = () => {
     },
     {
       id: 2,
-      image: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=1920&auto=format&fit=crop',
+      image: 'https://hpmleadership.com/wp-content/uploads/2023/09/Facilities-Maintenance-Capital-banner-1.webp',
       title: 'المقاولات العامة والبناء',
       subtitle: 'حلول هندسية متكاملة',
       description: 'نساهم في تطوير البنية التحتية برؤية مستدامة وجودة عالية، مع الالتزام بأحدث تقنيات البناء والابتكار.',
@@ -63,12 +63,12 @@ const Hero = () => {
                  transition={{ duration: 6, ease: "easeOut" }}
                  src={slide.image} 
                  alt={slide.title} 
-                 className="w-full h-full object-cover"
+                 className="w-full h-full  "
                />
                {/* Enhanced Gradients */}
                {/* Enhanced Gradients - Flipped to Right */}
-               <div className="absolute inset-0 bg-gradient-to-l from-black/90 via-black/60 to-transparent"></div>
-               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent"></div>
+               <div className="absolute inset-0 bg-gradient-to-l from-black/60 via-black/60 to-transparent"></div>
+               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/60 to-transparent"></div>
                <div className="absolute inset-0 bg-gradient-to-bl from-primary-500/10 via-transparent to-secondary-900/10"></div>
             </div>
 

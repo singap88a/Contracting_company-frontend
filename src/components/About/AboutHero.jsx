@@ -14,7 +14,7 @@ const AboutHero = () => {
         />
         
         {/* Professional Overlay Gradient */}
-        <div className="absolute inset-0 bg-gradient-to-l from-secondary-900/90 via-secondary-900/50 to-transparent"></div>
+        <div className="absolute inset-0 bg-gradient-to-l from-secondary-900/40 via-secondary-900/30 to-transparent"></div>
         
         {/* Decorative Grid / Technical Elements */}
         <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle, #fff 1px, transparent 1px)', backgroundSize: '40px 40px' }}></div>
